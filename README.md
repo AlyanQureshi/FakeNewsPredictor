@@ -188,7 +188,15 @@ GridSearchCV(
 
 ## Results and Conclusions
 
-The project compared Multinomial Naive Bayes, Random Forest, and LinearSVC on TF-IDF text features.
+The project compared Multinomial Naive Bayes, Random Forest, and LinearSVC on TF-IDF text features. All models were evaluated on the same held-out test set of 11,225 articles (25% of the 44,898-article dataset).
+
+| Model | Accuracy | Precision | Recall | F1-Score | ROC-AUC | PR-AUC | False Negatives |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| **Multinomial Naive Bayes** | **0.94** | 0.93 | 0.95 | 0.94 | 0.94 | 0.91 | 275 |
+| LinearSVC | 0.94 | 0.93 | 0.94 | 0.94 | 0.94 | 0.91 | 332 |
+| Random Forest | 0.91 | 0.87 | **0.97** | 0.92 | 0.90 | 0.86 | **186** |
+
+*False negatives = fake articles classified as real.* Full results, including ROC curves, precision-recall curves, and confusion matrices for each model, are in [Project_Results.pdf](Project_Results.pdf).
 
 Key conclusions:
 
@@ -196,7 +204,7 @@ Key conclusions:
 - **LinearSVC** worked well for high-dimensional sparse text data and produced strong classification results.
 - **Random Forest** provided interpretability and robustness but was less ideal for sparse TF-IDF text features.
 - The final comparison showed that MultinomialNB produced the strongest overall result for this dataset, followed by SVM, then Random Forest.
-- The project prioritized reducing false negatives to limit fake news being classified as real.
+- The project prioritized reducing false negatives to limit fake news being classified as real. Random Forest produced the fewest false negatives (97% recall), but at the cost of far more false positives (871 real articles flagged as fake, 87% precision), showing the precision-recall trade-off between the models.
 
 ## User Input Interface
 
@@ -254,8 +262,6 @@ pip install pandas scikit-learn matplotlib seaborn kagglehub
 python main.py
 ```
 
-If your project uses a different filename, replace `main.py` with the correct script name.
-
 ### 3. Select a model
 
 When prompted, choose one of the available models:
@@ -289,7 +295,7 @@ fake-news-detection/
 └── requirements.txt
 ```
 
-Suggested structure:
+File overview:
 
 - `main.py` — loads data, trains the selected model, and runs predictions
 - `ML_models.py` — contains model pipelines, input handling, and evaluation metrics
